@@ -26,7 +26,15 @@ class Api::RatingsController < ApplicationController
   # Get all ratings for a menu item
   def by_menu
     menu_id = params[:menu_id]
-    ratings = Rating.where(menu_id: menu_id)
+    ratings = Rating.where(menu_id: menu_id).map do |rating|
+      {
+        _id: rating.id,
+        menu_id: rating.menu_id,
+        stars: rating.stars,
+        created_at: rating.created_at,
+        updated_at: rating.updated_at
+      }
+    end
     render json: ratings
   end
 

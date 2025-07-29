@@ -1,5 +1,5 @@
 class Api::CommentsController < ApplicationController
-  before_action :authenticate_user, except: [:create]
+  before_action :authenticate_user, except: [:create, :index]
   
   # Create a new comment
   def create
@@ -52,7 +52,17 @@ class Api::CommentsController < ApplicationController
 
   # Get all comments
   def index
-    comments = Comment.order(created_at: :desc)
+    comments = Comment.order(created_at: :desc).map do |comment|
+      {
+        _id: comment.id,
+        name: comment.name,
+        phone: comment.phone,
+        comment: comment.comment,
+        anonymous: comment.anonymous,
+        createdAt: comment.created_at,
+        updatedAt: comment.updated_at
+      }
+    end
     render json: { success: true, comments: comments }, status: :ok
   rescue => error
     render json: { 

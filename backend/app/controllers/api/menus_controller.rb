@@ -22,10 +22,10 @@ class Api::MenusController < ApplicationController
       name: params[:name],
       ingredients: params[:ingredients],
       price: params[:price],
-      available: params[:available],
-      out_of_stock: params[:out_of_stock],
+      available: params[:available] != false,
+      out_of_stock: params[:outOfStock] == true || params[:out_of_stock] == true,
       badge: params[:badge],
-      category_id: params[:category_id]
+      category_id: params[:category_id] || params[:category]
     }
 
     # If image is explicitly set to empty string, remove image
@@ -37,7 +37,7 @@ class Api::MenusController < ApplicationController
 
     if menu.update(update_data.compact)
       formatted_menu = {
-        id: menu.id,
+        _id: menu.id,
         name: menu.name,
         ingredients: menu.ingredients,
         price: menu.price,
@@ -73,7 +73,7 @@ class Api::MenusController < ApplicationController
     menus = Menu.where(category_id: params[:category_id])
     formatted_menus = menus.map do |menu|
       {
-        id: menu.id,
+        _id: menu.id,
         name: menu.name,
         ingredients: menu.ingredients,
         price: menu.price,
@@ -105,15 +105,15 @@ class Api::MenusController < ApplicationController
       ingredients: params[:ingredients],
       price: params[:price],
       image: image_url,
-      available: params[:available],
-      out_of_stock: params[:out_of_stock],
+      available: params[:available] != false,
+      out_of_stock: params[:outOfStock] == true || params[:out_of_stock] == true,
       badge: params[:badge],
-      category_id: params[:category_id]
+      category_id: params[:category_id] || params[:category]
     )
 
     if menu.save
       formatted_menu = {
-        id: menu.id,
+        _id: menu.id,
         name: menu.name,
         ingredients: menu.ingredients,
         price: menu.price,

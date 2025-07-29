@@ -164,13 +164,13 @@ const Menu = () => {
                       <div className="flex items-center space-x-2 mb-4">
                         <div className="flex items-center">
                           {menuRatings[item._id || item.id]?.avgRating 
-                            ? renderStars(menuRatings[item._id || item.id].avgRating)
+                            ? renderStars(Number(menuRatings[item._id || item.id].avgRating))
                             : <span className="text-gray-400">No ratings yet</span>
                           }
                         </div>
                         {menuRatings[item._id || item.id]?.avgRating && (
                           <span className="text-sm text-gray-500">
-                            {menuRatings[item._id || item.id].avgRating.toFixed(1)}
+                            {Number(menuRatings[item._id || item.id].avgRating).toFixed(1)}
                           </span>
                         )}
                       </div>

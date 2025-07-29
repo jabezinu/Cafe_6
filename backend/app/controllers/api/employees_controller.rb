@@ -17,22 +17,38 @@ class Api::EmployeesController < ApplicationController
       image: image_url,
       position: params[:position],
       salary: params[:salary],
-      date_hired: params[:date_hired] || Time.current,
+      date_hired: params[:dateHired] || params[:date_hired] || Time.current,
       description: params[:description],
-      working_hour: params[:working_hour],
+      working_hour: params[:workingHour] || params[:working_hour],
       status: params[:status] || 'active',
-      reason_for_leaving: params[:reason_for_leaving] || ''
+      reason_for_leaving: params[:reasonForLeaving] || params[:reason_for_leaving] || ''
     }
 
     # Ensure tableAssigned is only set if position is waiter
     if params[:position] == 'waiter'
-      employee_params[:table_assigned] = params[:table_assigned]
+      employee_params[:table_assigned] = params[:tableAssigned] || params[:table_assigned]
     end
 
     employee = Employee.new(employee_params)
 
     if employee.save
-      render json: employee, status: :created
+      formatted_employee = {
+        _id: employee.id,
+        name: employee.name,
+        phone: employee.phone,
+        image: employee.image,
+        position: employee.position,
+        salary: employee.salary,
+        dateHired: employee.date_hired,
+        description: employee.description,
+        workingHour: employee.working_hour,
+        tableAssigned: employee.table_assigned,
+        status: employee.status,
+        reasonForLeaving: employee.reason_for_leaving,
+        created_at: employee.created_at,
+        updated_at: employee.updated_at
+      }
+      render json: formatted_employee, status: :created
     else
       render json: { errors: employee.errors }, status: :unprocessable_entity
     end
@@ -40,7 +56,24 @@ class Api::EmployeesController < ApplicationController
 
   # Get all employees
   def index
-    employees = Employee.all
+    employees = Employee.all.map do |employee|
+      {
+        _id: employee.id,
+        name: employee.name,
+        phone: employee.phone,
+        image: employee.image,
+        position: employee.position,
+        salary: employee.salary,
+        dateHired: employee.date_hired,
+        description: employee.description,
+        workingHour: employee.working_hour,
+        tableAssigned: employee.table_assigned,
+        status: employee.status,
+        reasonForLeaving: employee.reason_for_leaving,
+        created_at: employee.created_at,
+        updated_at: employee.updated_at
+      }
+    end
     render json: employees
   end
 
@@ -53,7 +86,23 @@ class Api::EmployeesController < ApplicationController
       return
     end
 
-    render json: employee
+    formatted_employee = {
+      _id: employee.id,
+      name: employee.name,
+      phone: employee.phone,
+      image: employee.image,
+      position: employee.position,
+      salary: employee.salary,
+      dateHired: employee.date_hired,
+      description: employee.description,
+      workingHour: employee.working_hour,
+      tableAssigned: employee.table_assigned,
+      status: employee.status,
+      reasonForLeaving: employee.reason_for_leaving,
+      created_at: employee.created_at,
+      updated_at: employee.updated_at
+    }
+    render json: formatted_employee
   end
 
   # Update an employee
@@ -80,20 +129,36 @@ class Api::EmployeesController < ApplicationController
       position: params[:position],
       salary: params[:salary],
       description: params[:description],
-      working_hour: params[:working_hour],
+      working_hour: params[:workingHour] || params[:working_hour],
       status: params[:status],
-      reason_for_leaving: params[:reason_for_leaving]
+      reason_for_leaving: params[:reasonForLeaving] || params[:reason_for_leaving]
     }
 
     # Ensure tableAssigned is only set if position is waiter
     if params[:position] == 'waiter'
-      update_params[:table_assigned] = params[:table_assigned]
+      update_params[:table_assigned] = params[:tableAssigned] || params[:table_assigned]
     else
       update_params[:table_assigned] = nil
     end
 
     if employee.update(update_params.compact)
-      render json: employee
+      formatted_employee = {
+        _id: employee.id,
+        name: employee.name,
+        phone: employee.phone,
+        image: employee.image,
+        position: employee.position,
+        salary: employee.salary,
+        dateHired: employee.date_hired,
+        description: employee.description,
+        workingHour: employee.working_hour,
+        tableAssigned: employee.table_assigned,
+        status: employee.status,
+        reasonForLeaving: employee.reason_for_leaving,
+        created_at: employee.created_at,
+        updated_at: employee.updated_at
+      }
+      render json: formatted_employee
     else
       render json: { errors: employee.errors }, status: :unprocessable_entity
     end

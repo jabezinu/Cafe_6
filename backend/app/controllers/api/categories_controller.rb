@@ -6,7 +6,13 @@ class Api::CategoriesController < ApplicationController
     category = Category.new(name: params[:name])
     
     if category.save
-      render json: category, status: :created
+      formatted_category = {
+        _id: category.id,
+        name: category.name,
+        created_at: category.created_at,
+        updated_at: category.updated_at
+      }
+      render json: formatted_category, status: :created
     else
       render json: { errors: category.errors }, status: :unprocessable_entity
     end
@@ -14,7 +20,14 @@ class Api::CategoriesController < ApplicationController
 
   # Get all categories
   def index
-    categories = Category.all
+    categories = Category.all.map do |category|
+      {
+        _id: category.id,
+        name: category.name,
+        created_at: category.created_at,
+        updated_at: category.updated_at
+      }
+    end
     render json: categories, status: :ok
   end
 
@@ -28,7 +41,13 @@ class Api::CategoriesController < ApplicationController
     end
 
     if category.update(name: params[:name])
-      render json: category, status: :ok
+      formatted_category = {
+        _id: category.id,
+        name: category.name,
+        created_at: category.created_at,
+        updated_at: category.updated_at
+      }
+      render json: formatted_category, status: :ok
     else
       render json: { errors: category.errors }, status: :unprocessable_entity
     end

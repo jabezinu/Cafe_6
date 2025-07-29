@@ -28,7 +28,7 @@ const useMenuStore = create((set, get) => ({
       
       // Automatically fetch menu items for the first category
       if (data.length > 0) {
-        get().fetchMenuItems(data[0]._id);
+        get().fetchMenuItems(data[0]._id || data[0].id);
       }
       return data;
     } catch (error) {
@@ -68,7 +68,7 @@ const useMenuStore = create((set, get) => ({
         // Fetch ratings for all menu items in parallel
         const ratingsPromises = menuItems.map(async (item) => {
           try {
-            const { data } = await axios.get(`${API_URL}/rating/menu/${item._id || item.id}/average`);
+            const { data } = await axios.get(`${API_URL}/ratings/menu/${item._id || item.id}/average`);
             return { id: item._id || item.id, ...data };
           } catch {
             return { id: item._id || item.id, avgRating: 0, count: 0 };
@@ -127,7 +127,7 @@ const useMenuStore = create((set, get) => ({
       },
       ratingMsg: {
         ...state.ratingMsg,
-        [menuId]: ''
+        [menuId]: '' // Clear any previous messages
       }
     }));
   },
@@ -137,26 +137,11 @@ const useMenuStore = create((set, get) => ({
     if (!rating[menuId]) return;
     
     const today = new Date().toISOString().slice(0, 10);
-    const ratingKey = `ratings_${menuId}_${today}`;
-    const countKey = `rating_count_${menuId}_${today}`;
-    
-    // Get today's ratings for this menu item
-    const todayRatings = JSON.parse(localStorage.getItem(ratingKey) || '[]');
-    const ratingCount = parseInt(localStorage.getItem(countKey) || '0', 10);
-    
-    // Check if user has already rated this item 4 times today
-    if (ratingCount >= 4) {
-      set(state => ({
-        ratingMsg: {
-          ...state.ratingMsg,
-          [menuId]: 'You have reached the maximum of 4 ratings per day for this item.'
-        }
-      }));
-      return;
-    }
+    const userRatingKey = `user_rated_${menuId}_${today}`;
     
     // Check if user has already rated this item today
-    if (todayRatings.includes(menuId)) {
+    const hasRatedToday = localStorage.getItem(userRatingKey);
+    if (hasRatedToday) {
       set(state => ({
         ratingMsg: {
           ...state.ratingMsg,
@@ -167,44 +152,72 @@ const useMenuStore = create((set, get) => ({
     }
     
     try {
-      await axios.post(`${API_URL}/rating`, {
+      const response = await axios.post(`${API_URL}/ratings`, {
         menu: menuId,
-        stars: rating[menuId],
-        user: 'anonymous' // You might want to replace this with actual user ID if you have authentication
+        stars: rating[menuId]
       });
       
-      // Update local storage
-      localStorage.setItem(ratingKey, JSON.stringify([...todayRatings, menuId]));
-      localStorage.setItem(countKey, (ratingCount + 1).toString());
+      // Mark that user has rated this item today
+      localStorage.setItem(userRatingKey, 'true');
       
-      // Update the UI with the new rating
-      const currentRating = menuRatings[menuId] || { avgRating: 0, count: 0 };
-      const newCount = currentRating.count + 1;
-      const newAvg = ((currentRating.avgRating * currentRating.count) + rating[menuId]) / newCount;
-      
-      set(state => ({
-        menuRatings: {
-          ...state.menuRatings,
-          [menuId]: {
-            avgRating: newAvg,
-            count: newCount
+      // Fetch updated rating average from server
+      try {
+        const { data: avgData } = await axios.get(`${API_URL}/ratings/menu/${menuId}/average`);
+        
+        set(state => ({
+          menuRatings: {
+            ...state.menuRatings,
+            [menuId]: {
+              avgRating: avgData.avgRating || 0,
+              count: avgData.count || 0
+            }
+          },
+          rating: {
+            ...state.rating,
+            [menuId]: 0 // Reset the selected rating
+          },
+          ratingMsg: {
+            ...state.ratingMsg,
+            [menuId]: 'Thank you for your rating!'
           }
-        },
-        rating: {
-          ...state.rating,
-          [menuId]: 0 // Reset the selected rating
-        },
-        ratingMsg: {
-          ...state.ratingMsg,
-          [menuId]: 'Thank you for your rating!'
-        }
-      }));
+        }));
+      } catch (avgError) {
+        // If fetching average fails, update with local calculation
+        const currentRating = menuRatings[menuId] || { avgRating: 0, count: 0 };
+        const newCount = currentRating.count + 1;
+        const newAvg = ((currentRating.avgRating * currentRating.count) + rating[menuId]) / newCount;
+        
+        set(state => ({
+          menuRatings: {
+            ...state.menuRatings,
+            [menuId]: {
+              avgRating: newAvg,
+              count: newCount
+            }
+          },
+          rating: {
+            ...state.rating,
+            [menuId]: 0 // Reset the selected rating
+          },
+          ratingMsg: {
+            ...state.ratingMsg,
+            [menuId]: 'Thank you for your rating!'
+          }
+        }));
+      }
       
     } catch (error) {
+      console.error('Rating submission error:', error);
+      console.error('Error details:', {
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message
+      });
+      const errorMessage = error.response?.data?.message || 'Failed to submit rating. Please try again.';
       set(state => ({
         ratingMsg: {
           ...state.ratingMsg,
-          [menuId]: 'Failed to submit rating. Please try again.'
+          [menuId]: errorMessage
         }
       }));
     }
