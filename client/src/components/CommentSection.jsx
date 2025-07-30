@@ -14,7 +14,7 @@ const CommentSection = () => {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [hasCommentedToday, setHasCommentedToday] = useState(false)
-  const [lastCommentTime, setLastCommentTime] = useState(null)
+  const [_lastCommentTime, setLastCommentTime] = useState(null)
 
   // Check if user has already commented today
   useEffect(() => {

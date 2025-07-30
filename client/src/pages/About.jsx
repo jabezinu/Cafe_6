@@ -13,7 +13,7 @@ import Footer from '../components/Footer'
 
 const About = () => {
   const [scrollY, setScrollY] = useState(0)
-  const [activeSection, setActiveSection] = useState(0)
+  const [_activeSection, _setActiveSection] = useState(0)
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY)

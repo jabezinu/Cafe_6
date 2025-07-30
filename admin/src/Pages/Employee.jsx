@@ -14,7 +14,7 @@ const Employee = () => {
     showFired,
     setShowForm,
     setShowFired,
-    setForm,
+    _setForm,
     setField,
     openCreate,
     openEdit,

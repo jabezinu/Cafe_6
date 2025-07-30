@@ -161,7 +161,7 @@ const useMenuStore = create((set, get) => ({
     }
 
     try {
-      const response = await axios.post(`${API_URL}/ratings`, {
+      const _response = await axios.post(`${API_URL}/ratings`, {
         menu: menuId,
         stars: rating[menuId],
       })
@@ -192,7 +192,7 @@ const useMenuStore = create((set, get) => ({
             [menuId]: 'Thank you for your rating!',
           },
         }))
-      } catch (avgError) {
+      } catch {
         // If fetching average fails, update with local calculation
         const currentRating = menuRatings[menuId] || { avgRating: 0, count: 0 }
         const newCount = currentRating.count + 1

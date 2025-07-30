@@ -13,7 +13,7 @@ const Comment = () => {
         const res = await fetch(`${BACKEND_URL}/comments`)
         const data = await res.json()
         setComments(data.comments)
-      } catch (err) {
+      } catch {
         setError('Failed to fetch comments')
       } finally {
         setLoading(false)

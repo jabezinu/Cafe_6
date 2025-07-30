@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom'
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [_mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const location = useLocation()
 
   const navigation = [

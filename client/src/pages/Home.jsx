@@ -27,12 +27,12 @@ import { Link } from 'react-router-dom'
 import Footer from '../components/Footer'
 
 const Home = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const [scrollY, setScrollY] = useState(0)
+  const [_mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [_scrollY, setScrollY] = useState(0)
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
   const [coffeeBeans, setCoffeeBeans] = useState([])
   const [timeOfDay, setTimeOfDay] = useState('morning')
-  const [activeStep, setActiveStep] = useState(0)
+  const [_activeStep, setActiveStep] = useState(0)
   const heroRef = useRef(null)
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const Home = () => {
     }, 5000)
 
     return () => clearInterval(testimonialInterval)
-  }, [])
+  }, [testimonials.length])
 
   useEffect(() => {
     const stepInterval = setInterval(() => {
@@ -84,7 +84,7 @@ const Home = () => {
     }, 3000)
 
     return () => clearInterval(stepInterval)
-  }, [])
+  }, [coffeeSteps.length])
 
   const testimonials = [
     {
