@@ -1,7 +1,7 @@
 import React from 'react'
-import CommentSection from '../components/CommentSection';
-import { MdEmail, MdPhone, MdLocationOn, MdAccessTime } from 'react-icons/md';
-import Footer from '../components/Footer';
+import CommentSection from '../components/CommentSection'
+import { MdEmail, MdPhone, MdLocationOn, MdAccessTime } from 'react-icons/md'
+import Footer from '../components/Footer'
 
 const workingHours = [
   { day: 'Monday', hours: '8:30 AM – 7:30 PM' },
@@ -11,7 +11,7 @@ const workingHours = [
   { day: 'Friday', hours: '8:30 AM – 7:30 PM' },
   { day: 'Saturday', hours: '8:30 AM – 7:30 PM' },
   { day: 'Sunday', hours: '8:30 AM – 7:30 PM' },
-];
+]
 
 const ContactUs = () => {
   return (
@@ -42,7 +42,8 @@ const ContactUs = () => {
             <div className="w-16 sm:w-24 lg:w-32 h-1 bg-gradient-to-r from-amber-600 to-orange-600 mx-auto mt-2 sm:mt-4 rounded-full"></div>
           </div>
           <p className="text-lg sm:text-xl text-amber-800 max-w-2xl mx-auto leading-relaxed px-4">
-            Brewing connections, one conversation at a time. Let's chat over coffee!
+            Brewing connections, one conversation at a time. Let's chat over
+            coffee!
           </p>
         </div>
 
@@ -58,8 +59,13 @@ const ContactUs = () => {
                     <MdEmail size={24} className="text-white sm:w-8 sm:h-8" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-xl sm:text-2xl font-bold text-amber-900 mb-1 sm:mb-2">Email</h3>
-                    <a href="mailto:contact@akakacoffee.com" className="text-amber-700 hover:text-amber-900 text-sm sm:text-lg font-medium transition-colors duration-300 break-all">
+                    <h3 className="text-xl sm:text-2xl font-bold text-amber-900 mb-1 sm:mb-2">
+                      Email
+                    </h3>
+                    <a
+                      href="mailto:contact@akakacoffee.com"
+                      className="text-amber-700 hover:text-amber-900 text-sm sm:text-lg font-medium transition-colors duration-300 break-all"
+                    >
                       contact@akakacoffee.com
                     </a>
                   </div>
@@ -73,8 +79,13 @@ const ContactUs = () => {
                     <MdPhone size={24} className="text-white sm:w-8 sm:h-8" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-xl sm:text-2xl font-bold text-amber-900 mb-1 sm:mb-2">Phone</h3>
-                    <a href="tel:+251903243174" className="text-amber-700 hover:text-amber-900 text-sm sm:text-lg font-medium transition-colors duration-300">
+                    <h3 className="text-xl sm:text-2xl font-bold text-amber-900 mb-1 sm:mb-2">
+                      Phone
+                    </h3>
+                    <a
+                      href="tel:+251903243174"
+                      className="text-amber-700 hover:text-amber-900 text-sm sm:text-lg font-medium transition-colors duration-300"
+                    >
                       +251 903 243174
                     </a>
                   </div>
@@ -85,11 +96,18 @@ const ContactUs = () => {
               <div className="bg-white/80 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 border border-yellow-200/50 shadow-xl hover:shadow-2xl hover:bg-white/90 transition-all duration-500 group">
                 <div className="flex items-center gap-4 sm:gap-6">
                   <div className="bg-gradient-to-br from-yellow-500 to-amber-500 p-3 sm:p-4 rounded-xl sm:rounded-2xl group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                    <MdLocationOn size={24} className="text-white sm:w-8 sm:h-8" />
+                    <MdLocationOn
+                      size={24}
+                      className="text-white sm:w-8 sm:h-8"
+                    />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-xl sm:text-2xl font-bold text-amber-900 mb-1 sm:mb-2">Location</h3>
-                    <span className="text-amber-700 text-sm sm:text-lg font-medium">Addis Ababa</span>
+                    <h3 className="text-xl sm:text-2xl font-bold text-amber-900 mb-1 sm:mb-2">
+                      Location
+                    </h3>
+                    <span className="text-amber-700 text-sm sm:text-lg font-medium">
+                      Addis Ababa
+                    </span>
                   </div>
                 </div>
               </div>
@@ -98,15 +116,27 @@ const ContactUs = () => {
               <div className="bg-white/80 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 border border-amber-200/50 shadow-xl hover:shadow-2xl hover:bg-white/90 transition-all duration-500 group">
                 <div className="flex items-start gap-4 sm:gap-6">
                   <div className="bg-gradient-to-br from-amber-600 to-orange-600 p-3 sm:p-4 rounded-xl sm:rounded-2xl group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                    <MdAccessTime size={24} className="text-white sm:w-8 sm:h-8" />
+                    <MdAccessTime
+                      size={24}
+                      className="text-white sm:w-8 sm:h-8"
+                    />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-xl sm:text-2xl font-bold text-amber-900 mb-3 sm:mb-4">Working Hours</h3>
+                    <h3 className="text-xl sm:text-2xl font-bold text-amber-900 mb-3 sm:mb-4">
+                      Working Hours
+                    </h3>
                     <div className="space-y-2 sm:space-y-3">
                       {workingHours.map(({ day, hours }) => (
-                        <div key={day} className="flex justify-between items-center py-1 border-b border-amber-200/50 last:border-b-0">
-                          <span className="text-amber-700 font-medium text-sm sm:text-base">{day}</span>
-                          <span className="text-amber-600 text-xs sm:text-sm whitespace-nowrap ml-2">{hours}</span>
+                        <div
+                          key={day}
+                          className="flex justify-between items-center py-1 border-b border-amber-200/50 last:border-b-0"
+                        >
+                          <span className="text-amber-700 font-medium text-sm sm:text-base">
+                            {day}
+                          </span>
+                          <span className="text-amber-600 text-xs sm:text-sm whitespace-nowrap ml-2">
+                            {hours}
+                          </span>
                         </div>
                       ))}
                     </div>
@@ -137,9 +167,15 @@ const ContactUs = () => {
           <div className="text-center mb-8 sm:mb-12 lg:mb-16">
             <div className="bg-gradient-to-r from-amber-100 to-orange-100 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 border border-amber-300/50 shadow-xl inline-block max-w-2xl mx-4 sm:mx-auto">
               <div className="mb-4 sm:mb-6">
-                <div className="text-4xl sm:text-5xl lg:text-6xl mb-2 sm:mb-4">☕</div>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-amber-900 mb-2 sm:mb-4">Love our coffee?</h2>
-                <p className="text-amber-700 text-sm sm:text-base lg:text-lg mb-4 sm:mb-6">Share your experience with fellow coffee lovers!</p>
+                <div className="text-4xl sm:text-5xl lg:text-6xl mb-2 sm:mb-4">
+                  ☕
+                </div>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-amber-900 mb-2 sm:mb-4">
+                  Love our coffee?
+                </h2>
+                <p className="text-amber-700 text-sm sm:text-base lg:text-lg mb-4 sm:mb-6">
+                  Share your experience with fellow coffee lovers!
+                </p>
               </div>
               <a
                 href="https://maps.app.goo.gl/yctmZKAvD1j97bcH8"
@@ -159,8 +195,12 @@ const ContactUs = () => {
           {/* Comment Section */}
           <div className="bg-white/80 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 border border-amber-200/50 shadow-xl max-w-6xl mx-auto">
             <div className="text-center mb-4 sm:mb-6">
-              <h3 className="text-2xl sm:text-3xl font-bold text-amber-900 mb-2">Share Your Thoughts</h3>
-              <p className="text-amber-700 text-sm sm:text-base">We'd love to hear from our coffee community!</p>
+              <h3 className="text-2xl sm:text-3xl font-bold text-amber-900 mb-2">
+                Share Your Thoughts
+              </h3>
+              <p className="text-amber-700 text-sm sm:text-base">
+                We'd love to hear from our coffee community!
+              </p>
             </div>
             <CommentSection />
           </div>
@@ -169,7 +209,7 @@ const ContactUs = () => {
       {/* Footer */}
       <Footer />
     </div>
-  );
+  )
 }
 
-export default ContactUs;
+export default ContactUs
