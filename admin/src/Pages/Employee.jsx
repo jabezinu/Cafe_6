@@ -30,18 +30,18 @@ const Employee = () => {
 
   const handleInput = e => {
     if (e.target.type === 'file') {
-      const file = e.target.files[0];
+      const file = e.target.files[0]
       if (file) {
         // Check file size (2.5MB = 2.5 * 1024 * 1024 bytes)
         if (file.size > 2.5 * 1024 * 1024) {
-          alert('Image size should not exceed 2.5MB');
-          e.target.value = ''; // Reset the file input
-          return;
+          alert('Image size should not exceed 2.5MB')
+          e.target.value = '' // Reset the file input
+          return
         }
-        setField(e.target.name, file);
+        setField(e.target.name, file)
       }
     } else {
-      setField(e.target.name, e.target.value);
+      setField(e.target.name, e.target.value)
     }
   }
 
@@ -60,65 +60,79 @@ const Employee = () => {
         <>
           {/* Active/Resigned Employees */}
           <div>
-            <h2 className="text-lg sm:text-xl font-semibold mb-2">Current Employees</h2>
+            <h2 className="text-lg sm:text-xl font-semibold mb-2">
+              Current Employees
+            </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-              {employees.filter(emp => emp.status !== 'fired').map(emp => (
-                <div
-                  key={emp._id}
-                  className="relative bg-white shadow-md rounded-lg p-4 sm:p-6 flex flex-col items-center group hover:shadow-lg transition-shadow duration-200"
-                >
-                  {emp.image && (
-                    <img
-                      src={emp.image}
-                      alt={emp.name}
-                      className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover mb-4 ring-2 ring-gray-200"
-                    />
-                  )}
-                  <div className="text-lg sm:text-xl font-semibold text-gray-800">{emp.name}</div>
-                  <div className="text-gray-600 text-sm sm:text-base">{emp.position}</div>
-                  <div className="mt-4 text-xs sm:text-sm text-gray-700 space-y-1">
-                    <div>Phone: {emp.phone}</div>
-                    <div>
-                      Status:{' '}
-                      <span
-                        className={
-                          emp.status === 'active' ? 'text-green-600' : 'text-gray-600'
-                        }
+              {employees
+                .filter(emp => emp.status !== 'fired')
+                .map(emp => (
+                  <div
+                    key={emp._id}
+                    className="relative bg-white shadow-md rounded-lg p-4 sm:p-6 flex flex-col items-center group hover:shadow-lg transition-shadow duration-200"
+                  >
+                    {emp.image && (
+                      <img
+                        src={emp.image}
+                        alt={emp.name}
+                        className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover mb-4 ring-2 ring-gray-200"
+                      />
+                    )}
+                    <div className="text-lg sm:text-xl font-semibold text-gray-800">
+                      {emp.name}
+                    </div>
+                    <div className="text-gray-600 text-sm sm:text-base">
+                      {emp.position}
+                    </div>
+                    <div className="mt-4 text-xs sm:text-sm text-gray-700 space-y-1">
+                      <div>Phone: {emp.phone}</div>
+                      <div>
+                        Status:{' '}
+                        <span
+                          className={
+                            emp.status === 'active'
+                              ? 'text-green-600'
+                              : 'text-gray-600'
+                          }
+                        >
+                          {emp.status}
+                        </span>
+                      </div>
+                      <div>Salary: {emp.salary} Birr</div>
+                      <div>
+                        Hired:{' '}
+                        {emp.dateHired
+                          ? new Date(emp.dateHired).toLocaleDateString()
+                          : ''}
+                      </div>
+                    </div>
+                    <div className="absolute top-4 right-4 flex gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      <button
+                        className="p-2 bg-yellow-400 text-white rounded-full hover:bg-yellow-500"
+                        onClick={() => openEdit(emp)}
+                        disabled={actionLoading}
                       >
-                        {emp.status}
-                      </span>
-                    </div>
-                    <div>Salary: {emp.salary} Birr</div>
-                    <div>
-                      Hired:{' '}
-                      {emp.dateHired ? new Date(emp.dateHired).toLocaleDateString() : ''}
+                        <PencilIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                      </button>
+                      <button
+                        className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600"
+                        onClick={() => handleDelete(emp._id)}
+                        disabled={actionLoading}
+                      >
+                        <TrashIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                      </button>
                     </div>
                   </div>
-                  <div className="absolute top-4 right-4 flex gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    <button
-                      className="p-2 bg-yellow-400 text-white rounded-full hover:bg-yellow-500"
-                      onClick={() => openEdit(emp)}
-                      disabled={actionLoading}
-                    >
-                      <PencilIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-                    </button>
-                    <button
-                      className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600"
-                      onClick={() => handleDelete(emp._id)}
-                      disabled={actionLoading}
-                    >
-                      <TrashIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-                    </button>
-                  </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
           {/* Fired Employees Section */}
           {employees.some(emp => emp.status === 'fired') && (
             <div className="mt-6 sm:mt-10">
               <div className="flex items-center gap-2 mb-2">
-                <h2 className="text-lg sm:text-xl font-semibold text-red-600">Fired Employees</h2>
+                <h2 className="text-lg sm:text-xl font-semibold text-red-600">
+                  Fired Employees
+                </h2>
                 <button
                   className="text-xs sm:text-sm px-2 py-1 border rounded bg-white hover:bg-gray-100"
                   onClick={() => setShowFired(!showFired)}
@@ -129,53 +143,58 @@ const Employee = () => {
               </div>
               {showFired && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-                  {employees.filter(emp => emp.status === 'fired').map(emp => (
-                    <div
-                      key={emp._id}
-                      className="relative bg-gray-100 shadow-md rounded-lg p-4 sm:p-6 flex flex-col items-center group hover:shadow-lg transition-shadow duration-200 border-l-4 border-red-500 opacity-80"
-                    >
-                      {emp.image && (
-                        <img
-                          src={emp.image}
-                          alt={emp.name}
-                          className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover mb-4 ring-2 ring-gray-200 grayscale"
-                        />
-                      )}
-                      <div className="text-lg sm:text-xl font-semibold text-gray-800 line-through">
-                        {emp.name}
-                      </div>
-                      <div className="text-gray-600 text-sm sm:text-base">{emp.position}</div>
-                      <div className="mt-4 text-xs sm:text-sm text-gray-700 space-y-1">
-                        <div>Phone: {emp.phone}</div>
-                        <div>
-                          Status: <span className="text-red-600">{emp.status}</span>
+                  {employees
+                    .filter(emp => emp.status === 'fired')
+                    .map(emp => (
+                      <div
+                        key={emp._id}
+                        className="relative bg-gray-100 shadow-md rounded-lg p-4 sm:p-6 flex flex-col items-center group hover:shadow-lg transition-shadow duration-200 border-l-4 border-red-500 opacity-80"
+                      >
+                        {emp.image && (
+                          <img
+                            src={emp.image}
+                            alt={emp.name}
+                            className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover mb-4 ring-2 ring-gray-200 grayscale"
+                          />
+                        )}
+                        <div className="text-lg sm:text-xl font-semibold text-gray-800 line-through">
+                          {emp.name}
                         </div>
-                        <div>Salary: ${emp.salary}</div>
-                        <div>
-                          Hired:{' '}
-                          {emp.dateHired
-                            ? new Date(emp.dateHired).toLocaleDateString()
-                            : ''}
+                        <div className="text-gray-600 text-sm sm:text-base">
+                          {emp.position}
+                        </div>
+                        <div className="mt-4 text-xs sm:text-sm text-gray-700 space-y-1">
+                          <div>Phone: {emp.phone}</div>
+                          <div>
+                            Status:{' '}
+                            <span className="text-red-600">{emp.status}</span>
+                          </div>
+                          <div>Salary: ${emp.salary}</div>
+                          <div>
+                            Hired:{' '}
+                            {emp.dateHired
+                              ? new Date(emp.dateHired).toLocaleDateString()
+                              : ''}
+                          </div>
+                        </div>
+                        <div className="absolute top-4 right-4 flex gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                          <button
+                            className="p-2 bg-yellow-400 text-white rounded-full hover:bg-yellow-500"
+                            onClick={() => openEdit(emp)}
+                            disabled={actionLoading}
+                          >
+                            <PencilIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                          </button>
+                          <button
+                            className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600"
+                            onClick={() => handleDelete(emp._id)}
+                            disabled={actionLoading}
+                          >
+                            <TrashIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                          </button>
                         </div>
                       </div>
-                      <div className="absolute top-4 right-4 flex gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                        <button
-                          className="p-2 bg-yellow-400 text-white rounded-full hover:bg-yellow-500"
-                          onClick={() => openEdit(emp)}
-                          disabled={actionLoading}
-                        >
-                          <PencilIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-                        </button>
-                        <button
-                          className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600"
-                          onClick={() => handleDelete(emp._id)}
-                          disabled={actionLoading}
-                        >
-                          <TrashIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               )}
             </div>
@@ -197,7 +216,9 @@ const Employee = () => {
             >
               ✕
             </button>
-            <h2 className="text-lg sm:text-xl font-bold mb-4">{editId ? 'Edit' : 'Add'} Employee</h2>
+            <h2 className="text-lg sm:text-xl font-bold mb-4">
+              {editId ? 'Edit' : 'Add'} Employee
+            </h2>
             <div className="mb-2">
               <label className="block mb-1 text-sm sm:text-base">Image</label>
               <input
@@ -207,14 +228,14 @@ const Employee = () => {
                 onChange={handleInput}
                 className="w-full border px-2 py-1 rounded text-xs sm:text-sm"
               />
-              {(form.image && typeof form.image === 'object') && (
+              {form.image && typeof form.image === 'object' && (
                 <img
                   src={URL.createObjectURL(form.image)}
                   alt="Preview"
                   className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover mt-2"
                 />
               )}
-              {(form.image && typeof form.image === 'string') && (
+              {form.image && typeof form.image === 'string' && (
                 <img
                   src={form.image}
                   alt="Current"
@@ -243,7 +264,9 @@ const Employee = () => {
               />
             </div>
             <div className="mb-2">
-              <label className="block mb-1 text-sm sm:text-base">Position</label>
+              <label className="block mb-1 text-sm sm:text-base">
+                Position
+              </label>
               <select
                 name="position"
                 value={form.position}
@@ -254,7 +277,7 @@ const Employee = () => {
                 <option value="cashier">Cashier</option>
                 <option value="manager">Manager</option>
                 <option value="baresta">Baresta</option>
-                <option value="chaf">Chaf</option>  
+                <option value="chaf">Chaf</option>
                 <option value="janitor/cleaner">Janitor/Cleaner</option>
                 <option value="pastry chef">Pastry Chef</option>
               </select>
@@ -273,7 +296,9 @@ const Employee = () => {
             </div>
             {form.position === 'waiter' && (
               <div className="mb-2">
-                <label className="block mb-1 text-sm sm:text-base">Table Assigned</label>
+                <label className="block mb-1 text-sm sm:text-base">
+                  Table Assigned
+                </label>
                 <input
                   name="tableAssigned"
                   value={form.tableAssigned}
@@ -283,7 +308,9 @@ const Employee = () => {
               </div>
             )}
             <div className="mb-2">
-              <label className="block mb-1 text-sm sm:text-base">Description</label>
+              <label className="block mb-1 text-sm sm:text-base">
+                Description
+              </label>
               <input
                 name="description"
                 value={form.description}
@@ -292,7 +319,9 @@ const Employee = () => {
               />
             </div>
             <div className="mb-4">
-              <label className="block mb-1 text-sm sm:text-base">Working Hour</label>
+              <label className="block mb-1 text-sm sm:text-base">
+                Working Hour
+              </label>
               <input
                 name="workingHour"
                 value={form.workingHour}
@@ -302,7 +331,9 @@ const Employee = () => {
             </div>
             {editId && (
               <div className="mb-4">
-                <label className="block mb-1 text-sm sm:text-base">Status</label>
+                <label className="block mb-1 text-sm sm:text-base">
+                  Status
+                </label>
                 <select
                   name="status"
                   value={form.status}

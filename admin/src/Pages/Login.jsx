@@ -1,24 +1,27 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import useAuthStore from '../stores/authStore';
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import useAuthStore from '../stores/authStore'
 
 const Login = () => {
-  const navigate = useNavigate();
-  const { login, loading, error } = useAuthStore();
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
+  const navigate = useNavigate()
+  const { login, loading, error } = useAuthStore()
+  const [phone, setPhone] = useState('')
+  const [password, setPassword] = useState('')
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const success = await login(phone, password);
+  const handleSubmit = async e => {
+    e.preventDefault()
+    const success = await login(phone, password)
     if (success) {
-      navigate('/');
+      navigate('/')
     }
-  };
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow-md w-full max-w-sm">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-8 rounded shadow-md w-full max-w-sm"
+      >
         <h2 className="text-2xl font-bold mb-6 text-center">Manager Login</h2>
         <div className="mb-4">
           <label className="block mb-1 font-medium">Phone</label>
@@ -50,7 +53,7 @@ const Login = () => {
         </button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default Login; 
+export default Login

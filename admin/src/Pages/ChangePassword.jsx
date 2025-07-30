@@ -1,57 +1,59 @@
-import React, { useState } from 'react';
-import useAuthStore from '../stores/authStore';
+import React, { useState } from 'react'
+import useAuthStore from '../stores/authStore'
 
 const ChangePassword = () => {
-  const { changePassword, changePhoneNumber, loading, error } = useAuthStore();
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [success, setSuccess] = useState('');
+  const { changePassword, changePhoneNumber, loading, error } = useAuthStore()
+  const [oldPassword, setOldPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [success, setSuccess] = useState('')
 
   // Phone number change state
-  const [newPhone, setNewPhone] = useState('');
-  const [phonePassword, setPhonePassword] = useState('');
-  const [phoneSuccess, setPhoneSuccess] = useState('');
-  const [phoneError, setPhoneError] = useState('');
+  const [newPhone, setNewPhone] = useState('')
+  const [phonePassword, setPhonePassword] = useState('')
+  const [phoneSuccess, setPhoneSuccess] = useState('')
+  const [phoneError, setPhoneError] = useState('')
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSuccess('');
+  const handleSubmit = async e => {
+    e.preventDefault()
+    setSuccess('')
     if (newPassword !== confirmPassword) {
-      return alert('New passwords do not match.');
+      return alert('New passwords do not match.')
     }
-    const result = await changePassword(oldPassword, newPassword);
+    const result = await changePassword(oldPassword, newPassword)
     if (result) {
-      setSuccess('Password changed successfully.');
-      setOldPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
+      setSuccess('Password changed successfully.')
+      setOldPassword('')
+      setNewPassword('')
+      setConfirmPassword('')
     }
-  };
+  }
 
-  const handlePhoneSubmit = async (e) => {
-    e.preventDefault();
-    setPhoneSuccess('');
-    setPhoneError('');
+  const handlePhoneSubmit = async e => {
+    e.preventDefault()
+    setPhoneSuccess('')
+    setPhoneError('')
     if (!newPhone || !phonePassword) {
-      setPhoneError('Both fields are required.');
-      return;
+      setPhoneError('Both fields are required.')
+      return
     }
-    const result = await changePhoneNumber(newPhone, phonePassword);
+    const result = await changePhoneNumber(newPhone, phonePassword)
     if (result.success) {
-      setPhoneSuccess(result.message);
-      setNewPhone('');
-      setPhonePassword('');
+      setPhoneSuccess(result.message)
+      setNewPhone('')
+      setPhonePassword('')
     } else {
-      setPhoneError(result.message);
+      setPhoneError(result.message)
     }
-  };
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
         <form onSubmit={handleSubmit}>
-          <h2 className="text-2xl font-bold mb-6 text-center">Change Password</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center">
+            Change Password
+          </h2>
           <div className="mb-4">
             <label className="block mb-1 font-medium">Old Password</label>
             <input
@@ -76,7 +78,9 @@ const ChangePassword = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block mb-1 font-medium">Confirm New Password</label>
+            <label className="block mb-1 font-medium">
+              Confirm New Password
+            </label>
             <input
               type="password"
               className="w-full border rounded px-3 py-2"
@@ -88,7 +92,9 @@ const ChangePassword = () => {
             />
           </div>
           {error && <div className="mb-4 text-red-600 text-sm">{error}</div>}
-          {success && <div className="mb-4 text-green-600 text-sm">{success}</div>}
+          {success && (
+            <div className="mb-4 text-green-600 text-sm">{success}</div>
+          )}
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition mb-8"
@@ -99,7 +105,9 @@ const ChangePassword = () => {
         </form>
 
         <form onSubmit={handlePhoneSubmit}>
-          <h2 className="text-2xl font-bold mb-6 text-center mt-8">Change Phone Number</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center mt-8">
+            Change Phone Number
+          </h2>
           <div className="mb-4">
             <label className="block mb-1 font-medium">New Phone Number</label>
             <input
@@ -122,8 +130,12 @@ const ChangePassword = () => {
               autoComplete="current-password"
             />
           </div>
-          {phoneError && <div className="mb-4 text-red-600 text-sm">{phoneError}</div>}
-          {phoneSuccess && <div className="mb-4 text-green-600 text-sm">{phoneSuccess}</div>}
+          {phoneError && (
+            <div className="mb-4 text-red-600 text-sm">{phoneError}</div>
+          )}
+          {phoneSuccess && (
+            <div className="mb-4 text-green-600 text-sm">{phoneSuccess}</div>
+          )}
           <button
             type="submit"
             className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
@@ -134,7 +146,7 @@ const ChangePassword = () => {
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ChangePassword; 
+export default ChangePassword

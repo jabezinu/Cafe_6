@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, Home, Users, AlertCircle, MessageSquare, LogOut, Key } from 'lucide-react';
-import useAuthStore from '../stores/authStore';
+import React, { useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import {
+  Menu,
+  X,
+  Home,
+  Users,
+  AlertCircle,
+  MessageSquare,
+  LogOut,
+  Key,
+} from 'lucide-react'
+import useAuthStore from '../stores/authStore'
 
 const Navbar = ({ children }) => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const { logout } = useAuthStore();
+  const location = useLocation()
+  const navigate = useNavigate()
+  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isMobileOpen, setIsMobileOpen] = useState(false)
+  const [showLogoutModal, setShowLogoutModal] = useState(false)
+  const { logout } = useAuthStore()
 
   const navItems = [
     { name: 'Menu', path: '/', icon: Home },
@@ -17,20 +26,20 @@ const Navbar = ({ children }) => {
     { name: 'Out of Stock', path: '/out-of-stock', icon: AlertCircle },
     { name: 'Comments', path: '/comment', icon: MessageSquare },
     { name: 'Change Password', path: '/change-password', icon: Key },
-  ];
+  ]
 
   const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
+    logout()
+    navigate('/login')
+  }
 
   const toggleSidebar = () => {
-    setIsCollapsed(!isCollapsed);
-  };
+    setIsCollapsed(!isCollapsed)
+  }
 
   const toggleMobileMenu = () => {
-    setIsMobileOpen(!isMobileOpen);
-  };
+    setIsMobileOpen(!isMobileOpen)
+  }
 
   return (
     <div className="flex min-h-screen bg-gray-100">
@@ -64,14 +73,18 @@ const Navbar = ({ children }) => {
           {!isCollapsed && (
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 rounded-lg overflow-hidden">
-                <img src="/images.png" alt="Logo" className="w-full h-full object-cover" />
+                <img
+                  src="/images.png"
+                  alt="Logo"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                 Akaka Coffee
               </h1>
             </div>
           )}
-          
+
           <button
             onClick={toggleSidebar}
             className="hidden lg:flex p-1.5 hover:bg-slate-700 rounded-lg transition-colors"
@@ -79,7 +92,7 @@ const Navbar = ({ children }) => {
           >
             {isCollapsed ? <Menu size={16} /> : <X size={16} />}
           </button>
-          
+
           <button
             onClick={toggleMobileMenu}
             className="lg:hidden p-1.5 hover:bg-slate-700 rounded-lg transition-colors"
@@ -91,10 +104,10 @@ const Navbar = ({ children }) => {
 
         <nav className="flex-1 p-4">
           <ul className="space-y-2">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = location.pathname === item.path;
-              
+            {navItems.map(item => {
+              const Icon = item.icon
+              const isActive = location.pathname === item.path
+
               return (
                 <li key={item.path}>
                   <Link
@@ -103,8 +116,9 @@ const Navbar = ({ children }) => {
                     className={`
                       w-full flex items-center space-x-3 px-3 py-3 rounded-xl
                       transition-all duration-200 ease-in-out group relative
-                      ${isActive 
-                          ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' 
+                      ${
+                        isActive
+                          ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
                           : 'text-slate-300 hover:text-white hover:bg-slate-700/50'
                       }
                     `}
@@ -112,21 +126,21 @@ const Navbar = ({ children }) => {
                     {isActive && (
                       <div className="absolute left-0 top-0 bottom-0 w-1 bg-white rounded-r-full" />
                     )}
-                    
-                    <Icon 
-                      size={20} 
+
+                    <Icon
+                      size={20}
                       className={`
                         transition-transform duration-200 min-w-5
                         ${isActive ? 'scale-110' : 'group-hover:scale-105'}
                       `}
                     />
-                    
+
                     {!isCollapsed && (
                       <span className="font-medium transition-all duration-200">
                         {item.name}
                       </span>
                     )}
-                    
+
                     {isCollapsed && (
                       <div className="absolute left-full ml-2 px-2 py-1 bg-slate-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
                         {item.name}
@@ -135,7 +149,7 @@ const Navbar = ({ children }) => {
                     )}
                   </Link>
                 </li>
-              );
+              )
             })}
             {/* Logout Button */}
             <li className="mt-8">
@@ -150,9 +164,9 @@ const Navbar = ({ children }) => {
           </ul>
         </nav>
       </aside>
-      
+
       {/* Main Content */}
-      <div 
+      <div
         className={`
           flex-1 min-h-screen transition-all duration-300
           ${isCollapsed ? 'lg:ml-20' : 'lg:ml-64'}
@@ -175,14 +189,18 @@ const Navbar = ({ children }) => {
             </button>
             <div className="flex flex-col items-center">
               <LogOut size={36} className="text-red-600 mb-2" />
-              <h2 className="text-lg font-bold mb-2 text-gray-800">Confirm Logout</h2>
-              <p className="text-gray-600 mb-4 text-center">Are you sure you want to log out?</p>
+              <h2 className="text-lg font-bold mb-2 text-gray-800">
+                Confirm Logout
+              </h2>
+              <p className="text-gray-600 mb-4 text-center">
+                Are you sure you want to log out?
+              </p>
               <div className="flex space-x-3 w-full">
                 <button
                   className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 rounded font-semibold transition"
                   onClick={() => {
-                    setShowLogoutModal(false);
-                    handleLogout();
+                    setShowLogoutModal(false)
+                    handleLogout()
                   }}
                 >
                   Logout
@@ -199,7 +217,7 @@ const Navbar = ({ children }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

@@ -24,20 +24,21 @@ export const useEmployeeStore = create((set, get) => ({
   editId: null,
   showForm: false,
   showFired: false,
-  setShowForm: (val) => set({ showForm: val }),
-  setShowFired: (val) => set({ showFired: val }),
-  setForm: (form) => set({ form }),
-  setEditId: (id) => set({ editId: id }),
-  setActionLoading: (val) => set({ actionLoading: val }),
-  setField: (name, value) => set(state => ({ form: { ...state.form, [name]: value } })),
+  setShowForm: val => set({ showForm: val }),
+  setShowFired: val => set({ showFired: val }),
+  setForm: form => set({ form }),
+  setEditId: id => set({ editId: id }),
+  setActionLoading: val => set({ actionLoading: val }),
+  setField: (name, value) =>
+    set(state => ({ form: { ...state.form, [name]: value } })),
   resetForm: () => set({ form: initialForm, editId: null }),
 
   fetchEmployees: async () => {
     set({ loading: true })
     try {
-      const { token } = useAuthStore.getState();
+      const { token } = useAuthStore.getState()
       const res = await axios.get(`${BACKEND_URL}/employees/`, {
-        headers: token ? { Authorization: `Bearer ${token}` } : {}
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
       })
       set({ employees: res.data, error: null })
     } catch {
@@ -51,7 +52,7 @@ export const useEmployeeStore = create((set, get) => ({
     set({ form: initialForm, editId: null, showForm: true })
   },
 
-  openEdit: (emp) => {
+  openEdit: emp => {
     set({
       form: {
         name: emp.name || '',
@@ -69,12 +70,12 @@ export const useEmployeeStore = create((set, get) => ({
     })
   },
 
-  handleSubmit: async (e) => {
+  handleSubmit: async e => {
     e.preventDefault()
     set({ actionLoading: true })
     const { form, editId, fetchEmployees, setShowForm } = get()
     try {
-      const { token } = useAuthStore.getState();
+      const { token } = useAuthStore.getState()
       const formData = new FormData()
       Object.entries(form).forEach(([key, value]) => {
         if (value !== undefined && value !== null) formData.append(key, value)
@@ -83,15 +84,15 @@ export const useEmployeeStore = create((set, get) => ({
         await axios.put(`${BACKEND_URL}/employees/${editId}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
-            ...(token ? { Authorization: `Bearer ${token}` } : {})
-          }
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
         })
       } else {
         await axios.post(`${BACKEND_URL}/employees/`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
-            ...(token ? { Authorization: `Bearer ${token}` } : {})
-          }
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
         })
       }
       setShowForm(false)
@@ -103,14 +104,14 @@ export const useEmployeeStore = create((set, get) => ({
     }
   },
 
-  handleDelete: async (id) => {
+  handleDelete: async id => {
     if (!window.confirm('Delete this employee?')) return
     set({ actionLoading: true })
     const { fetchEmployees } = get()
     try {
-      const { token } = useAuthStore.getState();
+      const { token } = useAuthStore.getState()
       await axios.delete(`${BACKEND_URL}/employees/${id}`, {
-        headers: token ? { Authorization: `Bearer ${token}` } : {}
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
       })
       fetchEmployees()
     } catch {

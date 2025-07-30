@@ -1,22 +1,22 @@
-import React from 'react';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import Menu from './Pages/Menu';
-import Employee from './Pages/Employee';
-import Navbar from './Components/Navbar';
-import OutOfStock from './Pages/OutOfStock';
-import Comment from './Pages/Comment';
-import Login from './Pages/Login';
-import useAuthStore from './stores/authStore';
-import ChangePassword from './Pages/ChangePassword';
+import React from 'react'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import Menu from './Pages/Menu'
+import Employee from './Pages/Employee'
+import Navbar from './Components/Navbar'
+import OutOfStock from './Pages/OutOfStock'
+import Comment from './Pages/Comment'
+import Login from './Pages/Login'
+import useAuthStore from './stores/authStore'
+import ChangePassword from './Pages/ChangePassword'
 
 const ProtectedRoute = ({ children }) => {
-  const { token } = useAuthStore();
-  const location = useLocation();
+  const { token } = useAuthStore()
+  const location = useLocation()
   if (!token) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />
   }
-  return children;
-};
+  return children
+}
 
 const App = () => {
   return (
@@ -39,7 +39,7 @@ const App = () => {
         }
       />
     </Routes>
-  );
-};
+  )
+}
 
-export default App;
+export default App
