@@ -22,11 +22,20 @@ class Api::MenusController < ApplicationController
       name: params[:name],
       ingredients: params[:ingredients],
       price: params[:price],
-      available: params[:available] != false,
-      out_of_stock: params[:outOfStock] == true || params[:out_of_stock] == true,
       badge: params[:badge],
       category_id: params[:category_id] || params[:category]
     }
+
+    # Handle boolean parameters explicitly
+    if params.has_key?(:available)
+      update_data[:available] = params[:available] == true || params[:available] == 'true'
+    end
+
+    if params.has_key?(:outOfStock)
+      update_data[:out_of_stock] = params[:outOfStock] == true || params[:outOfStock] == 'true'
+    elsif params.has_key?(:out_of_stock)
+      update_data[:out_of_stock] = params[:out_of_stock] == true || params[:out_of_stock] == 'true'
+    end
 
     # If image is explicitly set to empty string, remove image
     if params[:image] == ''
@@ -40,7 +49,7 @@ class Api::MenusController < ApplicationController
         _id: menu.id,
         name: menu.name,
         ingredients: menu.ingredients,
-        price: menu.price,
+        price: menu.price.to_f,
         image: menu.image,
         available: menu.available,
         outOfStock: menu.out_of_stock,

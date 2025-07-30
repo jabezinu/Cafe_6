@@ -50,9 +50,9 @@ class Api::RatingsController < ApplicationController
     count = Rating.where(menu_id: menu_id).count
 
     if result.nil?
-      render json: { avgRating: 0, count: 0 }
+      render json: { avgRating: 0.0, count: 0 }
     else
-      avg_rating = result[1] # result is [menu_id, average]
+      avg_rating = result[1].to_f # result is [menu_id, average]
       render json: { avgRating: avg_rating, count: count }
     end
   end

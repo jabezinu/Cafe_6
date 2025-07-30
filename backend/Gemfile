@@ -57,4 +57,5 @@ group :development, :test do
   # Testing framework
   gem "rspec-rails"
   gem "factory_bot_rails"
+  gem "database_cleaner-active_record"
 end

@@ -134,21 +134,24 @@ class Api::EmployeesController < ApplicationController
       reason_for_leaving: params[:reasonForLeaving] || params[:reason_for_leaving]
     }
 
-    # Ensure tableAssigned is only set if position is waiter
-    if params[:position] == 'waiter'
-      update_params[:table_assigned] = params[:tableAssigned] || params[:table_assigned]
-    else
-      update_params[:table_assigned] = nil
+    # Handle table assignment based on position
+    if params[:position]
+      if params[:position] == 'waiter'
+        update_params[:table_assigned] = params[:tableAssigned] || params[:table_assigned]
+      else
+        # If changing to non-waiter position, clear table assignment
+        update_params[:table_assigned] = nil
+      end
     end
 
-    if employee.update(update_params.compact)
+    if employee.update(update_params.reject { |k, v| v.nil? && k != :table_assigned })
       formatted_employee = {
         _id: employee.id,
         name: employee.name,
         phone: employee.phone,
         image: employee.image,
         position: employee.position,
-        salary: employee.salary,
+        salary: employee.salary.to_i,
         dateHired: employee.date_hired,
         description: employee.description,
         workingHour: employee.working_hour,

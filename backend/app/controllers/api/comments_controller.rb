@@ -6,18 +6,19 @@ class Api::CommentsController < ApplicationController
     name = params[:name]
     phone = params[:phone]
     comment = params[:comment]
-    anonymous = !!params[:anonymous]
+    anonymous = params[:anonymous] == true || params[:anonymous] == 'true'
 
     # Validation: if not anonymous, name and phone are required
-    unless anonymous
-      if name.blank? || phone.blank?
-        render json: { 
-          success: false, 
-          message: 'Name and phone are required if not anonymous.' 
-        }, status: :bad_request
-        return
-      end
-    else
+    if !anonymous && (name.blank? || phone.blank?)
+      render json: { 
+        success: false, 
+        message: 'Name and phone are required if not anonymous.' 
+      }, status: :bad_request
+      return
+    end
+
+    # For anonymous comments, clear name and phone
+    if anonymous
       name = ''
       phone = ''
     end
@@ -30,10 +31,19 @@ class Api::CommentsController < ApplicationController
     )
 
     if new_comment.save
+      formatted_comment = {
+        _id: new_comment.id,
+        name: new_comment.name,
+        phone: new_comment.phone,
+        comment: new_comment.comment,
+        anonymous: new_comment.anonymous,
+        createdAt: new_comment.created_at,
+        updatedAt: new_comment.updated_at
+      }
       render json: { 
         success: true, 
         message: 'Comment submitted successfully', 
-        comment: new_comment 
+        comment: formatted_comment 
       }, status: :created
     else
       render json: { 
